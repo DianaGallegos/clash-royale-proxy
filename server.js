@@ -49,3 +49,19 @@ app.get("/clans/:tag/members", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+app.get("/clans/:tag/riverracelog", async (req, res) => {
+  try {
+    const tag = req.params.tag.replace("#", "%23");
+
+    const response = await fetch(`${CLASH_API}/clans/${tag}/riverracelog?limit=4`, {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Error obteniendo riverracelog" });
+  }
+});
